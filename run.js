@@ -105,7 +105,7 @@ function dataToJSON(str){
   //str = str.substring(0, str.indexOf('END'))
   str = str.replace(/(MUH,|M,|\r\n|\n|\r)/gm,"").trim().split(',')
   var obj = {}
-  for (var i=0 i<str.length i++) {
+  for (var i=0; i<str.length; i++) {
     var parts = str[i].split(':')
     if (isNaN(parts[1])){
       // set if empty
