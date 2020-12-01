@@ -39,28 +39,28 @@ var lastMsgDate = new Date()
 
 // serialport
 port.on('open', () => {
-  console.log(getTime() + ' --> serial port open')
+  console.log(getTime() + '--> serial port open')
   setTimeout(keepAlive, 1 * 60 * 1000)
 })
 
 port.on('close', () => {
-  console.log(getTime() + ' --> serial port closed')
+  console.log(getTime() + '--> serial port closed')
   //reConnect()
   process.exit(1)
 })
 
 port.on('error', (err) => {
-  console.log(getTime() + ' --> serial port error')
+  console.log(getTime() + '--> serial port error')
   console.log('error', err)
   //reConnect()
 })
 
 // check for connection errors or drops and reconnect
 var reConnect = function () {
-  console.log(' --> reconnecting ...')
+  console.log('--> reconnecting ...')
   port.close()
   setTimeout(function(){
-    console.log(' --> trying ...')
+    console.log('--> trying ...')
     port = new SerialPort(argv.tty, { baudRate: 9600 })
   }, 5000)
 }
@@ -72,8 +72,8 @@ parser_sp.on('data', data =>{
 
   //if (hexToUtf8(data.substring(0,2)) == 'M'){
   if (hexToUtf8(data).startsWith("M,")) {
-    console.log(getTime() + " --> hexToUtf8")
-    console.log(getTime() + " - " + data)
+    console.log(getTime() + "--> hexToUtf8")
+    console.log(getTime() + "- " + data)
     data = hexToUtf8(data)
   }
 
@@ -81,20 +81,20 @@ parser_sp.on('data', data =>{
   //const isASCII = string => /^[\x00-\x7F]*$/.test(string)
   data = data.replace(/(\r\n|\n|\r)/gm,"").trim()
   if (isASCIIMUH(data) && data.startsWith("M,")) {
-    console.log(getTime() + " - " + data)
+    console.log(getTime() + "- " + data)
     mySensor = dataToJSON(data)
     delete mySensor.E
     client.publish('sensors/' + mySensor.N + '/json', JSON.stringify(mySensor))
   } else {
     if (data.startsWith("> ") || data.length == 0){
-      console.log(getTime() + " - " + data.substr(2))
+      console.log(getTime() + "- " + data.substr(2))
     } else {
 	// DEBUG MSG
         if (data.startsWith("R") || data.startsWith("W")){
-          console.log(getTime() + " - " + data)
+          console.log(getTime() + "- " + data)
         } else {
-          //console.log(getTime() + " - ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
-          console.log(getTime() + " - ERR: " + data)
+          //console.log(getTime() + "- ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
+          console.log(getTime() + "- ERR: " + data)
 	}
     }
   }
@@ -129,13 +129,13 @@ function keepAlive() {
   var TWO_MIN= 2 * 60 * 1000
   var ONE_MIN= 2 * 60 * 1000
   if((keepAliveDate - new Date(lastMsgDate)) > FIVE_MIN) {
-    console.log(getTime() + ' --> timeout!')
+    console.log(getTime() + '--> timeout!')
     console.log((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
     console.log(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")
     port.close()
     //reConnect()
   } else {
-    console.log(getTime() + ' --> MARK')
+    console.log(getTime() + '--> MARK')
   }
   setTimeout(keepAlive, 1 * 60 * 1000)
 }
