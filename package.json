@@ -1,0 +1,32 @@
+{
+  "name": "node-cc1101-receiver",
+  "version": "1.0.0",
+  "description": "node serialport arduino cc1101 parser and mqtt publisher",
+  "main": "run.js",
+  "dependencies": {
+    "dayjs": "^1.9.6",
+    "mqtt": "^4.2.6",
+    "serial": "^0.0.9",
+    "serialport": "^9.0.2",
+    "yargs": "^16.1.1",
+    "yarn": "^1.22.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/13/node-cc1101-receiver.git"
+  },
+  "keywords": [
+    "cc1101",
+    "mqtt"
+  ],
+  "author": "ben",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/13/node-cc1101-receiver/issues"
+  },
+  "homepage": "https://github.com/13/node-cc1101-receiver#readme"
+}
