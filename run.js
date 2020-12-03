@@ -23,28 +23,20 @@ const dayjs = require('dayjs')
       })	  
   }).argv
 */
-var tty
 
 const argv = require('yargs')(process.argv.slice(2))
     .usage('Usage: $0 <tty>')
-    .check((argv, options) => {
-      tty = argv._
-        if (tty.length > 1) {
-          throw new Error("Only 0 or 1 files may be passed.")
-        } else {
-          return true // tell Yargs that the arguments passed the check
-        }
-     })
-    .alias('m', 'mqtt')
+    .alias('tty')
     .alias('t', 'timestamp')
+    .alias('m', 'mqtt')
     .argv
 
-console.log('tty: ' + tty + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
+console.log('tty: ' + argv.tty + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
 
 // configuration
+const tty = argv.tty || '/dev/ttyACM0'
 const mqtt_address = argv.mqtt || '192.168.22.5'
-
-var showTimestamp = (argv.timestamp ? true : false)
+const showTimestamp = (argv.timestamp ? true : false)
 
 // fs
 const fs = require("fs")
