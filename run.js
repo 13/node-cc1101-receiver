@@ -4,7 +4,7 @@
 const dayjs = require('dayjs')
 
 // yargs
-const argv = require('yargs')(process.argv.slice(2))
+/*const argv = require('yargs')(process.argv.slice(2))
   .command('$0 <tty>', 'start the app',(yargs) => {
     yargs
       .positional('tty', {
@@ -22,8 +22,23 @@ const argv = require('yargs')(process.argv.slice(2))
         description: 'custom mqtt'
       })	  
   }).argv
+*/
 
-console.log('tty: ' + argv.tty + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
+const argv = require('yargs')(process.argv.slice(2))
+    .usage('Usage: $0 <tty>')
+    .check((argv, options) => {
+      const tty = argv._
+        if (tty.length > 1) {
+          throw new Error("Only 0 or 1 files may be passed.")
+        } else {
+          return true // tell Yargs that the arguments passed the check
+        }
+     })
+    .alias('m', 'mqtt')
+    .alias('t', 'timestamp')
+    .argv
+
+console.log('tty: ' + tty + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
 
 // configuration
 const mqtt_address = argv.mqtt || '192.168.22.5'
@@ -42,7 +57,7 @@ fs.access(argv.tty, (err) => {
 // serial
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-var port = new SerialPort(argv.tty, { baudRate: 9600 })
+var port = new SerialPort(tty, { baudRate: 9600 })
 var parser_sp = port.pipe(new Readline({ delimiter: '\n' }))
 
 // mqtt
