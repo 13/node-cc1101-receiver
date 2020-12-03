@@ -23,11 +23,12 @@ const dayjs = require('dayjs')
       })	  
   }).argv
 */
+var tty
 
 const argv = require('yargs')(process.argv.slice(2))
     .usage('Usage: $0 <tty>')
     .check((argv, options) => {
-      const tty = argv._
+      tty = argv._
         if (tty.length > 1) {
           throw new Error("Only 0 or 1 files may be passed.")
         } else {
