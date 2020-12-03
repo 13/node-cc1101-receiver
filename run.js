@@ -1,14 +1,11 @@
 #!/usr/bin/env node
 
-// configuration
-const mqtt_address = '192.168.22.5'
-
 // dayjs
 const dayjs = require('dayjs')
 
 // yargs
 const argv = require('yargs')(process.argv.slice(2))
-  .command('$0 [tty]', 'start the app',(yargs) => {
+  .command('$0 <tty>', 'start the app',(yargs) => {
     yargs
       .positional('tty', {
         describe: 'serial port',
@@ -19,7 +16,17 @@ const argv = require('yargs')(process.argv.slice(2))
         //default: false,
         description: 'show timestamp'
       })
+      .option('mqtt', {
+        alias: 'm',
+        //default: false,
+        description: 'custom mqtt'
+      })	  
   }).argv
+
+console.log('tty: ' + argv.tty + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
+
+// configuration
+const mqtt_address = argv.mqtt || '192.168.22.5'
 
 var showTimestamp = (argv.timestamp ? true : false)
 
