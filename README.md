@@ -3,14 +3,11 @@ node serial arduino cc1101 parser and mqtt publisher
 
 ## Installation
 ```bash
-  pacman -S git npm
-
   git clone https://github.com/13/node-cc1101-receiver.git
 
   npm install
-  npm rebuild
 
-  node run.js
+  node run.js -p <tty port>
 ```
 
 ## TODO
