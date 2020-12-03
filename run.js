@@ -7,13 +7,23 @@ const mqtt_address = '192.168.22.5'
 const dayjs = require('dayjs');
 
 // yargs
-const argv = require('yargs')
+/*const argv = require('yargs')
   .usage('$0 <tty>', 'start the serial port', (yargs) => {
     yargs.positional('tty', {
       describe: 'the serial port that your application should bind to',
       default: '/dev/ttyUSB0'
     })
-  }).argv
+  }).argv*/
+const argv = require('yargs')(process.argv.slice(2))
+    .usage('Usage: $0 <tty>')
+    .command('tty', 'serial port')
+    .example('$0 /dev/ttyUSB0', 'the serial port that your application should bind to')
+    .alias('t', 'timestamp')
+    .default('t', false)
+    .default('tty', '/dev/ttyUSB0')
+    .argv;
+
+var showTimestamp = (argv.t ? true : false)
 
 // fs
 const fs = require("fs")
@@ -141,5 +151,7 @@ function keepAlive() {
 }
 
 function getTime() {
-  return dayjs().format('HH:mm:ss.SSS ')
+  if (showTimestamp) {
+    return dayjs().format('HH:mm:ss.SSS ')
+  } 
 }
