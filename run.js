@@ -67,7 +67,7 @@ const showTimestamp = (argv.timestamp ? true : false)
 
 // fs
 const fs = require("fs")
-fs.access(argv.tty, (err) => {
+fs.access(tty, (err) => {
   if (err) {
     console.log('error', err)
     process.exit(1)
@@ -111,7 +111,7 @@ var reConnect = function () {
   port.close()
   setTimeout(function(){
     console.log('--> trying ...')
-    port = new SerialPort(argv.tty, { baudRate: 9600 })
+    port = new SerialPort(tty, { baudRate: 9600 })
   }, 5000)
 }
 
