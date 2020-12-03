@@ -4,26 +4,6 @@
 const dayjs = require('dayjs')
 
 // yargs
-/*const argv = require('yargs')(process.argv.slice(2))
-  .command('$0 <tty>', 'start the app',(yargs) => {
-    yargs
-      .positional('tty', {
-        describe: 'serial port',
-        //default: '/dev/ttyUSB0'
-      })
-      .option('timestamp', {
-        alias: 't',
-        //default: false,
-        description: 'show timestamp'
-      })
-      .option('mqtt', {
-        alias: 'm',
-        //default: false,
-        description: 'custom mqtt'
-      })	  
-  }).argv
-*/
-
 const argv = require('yargs')(process.argv.slice(2))
   // help text
   .alias('h', 'help')
@@ -44,7 +24,7 @@ const argv = require('yargs')(process.argv.slice(2))
       alias : 'timestamp',
       describe: 'show timestamp',
       nargs: 0,
-      default: false,
+      //default: false,
       requiresArg: false
   })
   .option('m', {
@@ -55,8 +35,7 @@ const argv = require('yargs')(process.argv.slice(2))
       default: 'localhost',
       requiresArg: true
   }).argv
-
-console.log('tty: ' + argv.port + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
+//console.log('tty: ' + argv.port + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
 
 // configuration
 const tty = argv.port || '/dev/ttyACM0'
