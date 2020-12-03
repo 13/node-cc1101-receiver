@@ -14,6 +14,6 @@ node serial arduino cc1101 parser and mqtt publisher
 ```
 
 ## TODO
-- [ ] yargs add mqtt-host
-- [ ] yargs add -t switch to show/hide timestamps for systemd service
-- [ ] add systemd service file
+- [x] yargs add mqtt-host
+- [x] yargs add -t switch to show/hide timestamps for systemd service
+- [x] add systemd service file
