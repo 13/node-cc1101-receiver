@@ -159,6 +159,6 @@ function getTime() {
   if (showTimestamp) {
     return dayjs().format('HH:mm:ss.SSS ')
   } else {
-    return	  
+    return ''
   }
 }
