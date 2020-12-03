@@ -28,7 +28,7 @@ require('yargs')
       })
   })
 
-var showTimestamp = (argv.t ? true : false)
+var showTimestamp = (argv.timestamp ? true : false)
 
 // fs
 const fs = require("fs")
