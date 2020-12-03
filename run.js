@@ -20,7 +20,7 @@ const argv = require('yargs')(process.argv.slice(2))
     .example('$0 /dev/ttyUSB0', 'the serial port that your application should bind to')
     .alias('t', 'timestamp')
     .default('t', false)
-    .default('tty', '/dev/ttyUSB0')
+    .demandOption(['tty'])
     .argv;
 
 var showTimestamp = (argv.t ? true : false)
@@ -153,5 +153,7 @@ function keepAlive() {
 function getTime() {
   if (showTimestamp) {
     return dayjs().format('HH:mm:ss.SSS ')
-  } 
+  } else {
+    return	  
+  }
 }
