@@ -25,10 +25,6 @@ const dayjs = require('dayjs')
 */
 
 const argv = require('yargs')(process.argv.slice(2))
-  // version
-  .alias('v', 'version')
-  .version(function() { return require('../package').version; })
-  .describe('v', 'show version information')
   // help text
   .alias('h', 'help')
   .help('help')
