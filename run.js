@@ -4,10 +4,10 @@
 const mqtt_address = '192.168.22.5'
 
 // dayjs
-const dayjs = require('dayjs');
+const dayjs = require('dayjs')
 
 // yargs
-const argv = require('yargs')
+const argv = require('yargs')(process.argv.slice(2))
   .command('$0 [tty]', 'start the app',(yargs) => {
     yargs
       .positional('tty', {
