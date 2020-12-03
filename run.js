@@ -42,14 +42,15 @@ const argv = require('yargs')(process.argv.slice(2))
   })
   .option('t', {
       alias : 'timestamp',
-      describe: 'timestamp',
-      default: false,
+      describe: 'show timestamp',
+      nargs: 0,
       requiresArg: false
   })
   .option('m', {
       alias : 'mqtt',
       describe: 'mqtt server address',
       type: 'string',
+      nargs: 1,
       default: 'localhost',
       requiresArg: true
   }).argv
