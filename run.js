@@ -47,15 +47,15 @@ const argv = require('yargs')(process.argv.slice(2))
   .option('t', {
       alias : 'timestamp',
       describe: 'timestamp',
-      //default: false
-      // also: count:true, requiresArg:true
+      default: false,
+      requiresArg: false
   })
   .option('m', {
       alias : 'mqtt',
       describe: 'mqtt server address',
       type: 'string',
-      //default: false
-      // also: count:true, requiresArg:true
+      default: 'localhost',
+      requiresArg: true
   }).argv
 
 console.log('tty: ' + argv.port + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
