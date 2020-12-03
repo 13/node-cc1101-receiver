@@ -23,7 +23,7 @@ const argv = require('yargs')
       })
       .option('timestamp', {
         alias: 't',
-        default: false,
+        //default: false,
         description: 'show timestamp'
       })
   }).argv
