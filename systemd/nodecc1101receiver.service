@@ -1,0 +1,17 @@
+[Unit]
+Description=node cc1101 receiver
+Requires=After=docker.service
+
+[Service]
+Type=simple
+User=ben
+ExecStart=/usr/bin/node /home/ben/repo/node-cc1101-receiver/run.js -p /dev/ttyACM0 -m 192.168.22.5
+Restart=always
+RestartSec=30
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=node-cc1101-receiver
+
+[Install]
+WantedBy=multi-user.target
