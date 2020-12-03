@@ -26,7 +26,7 @@ require('yargs')
         default: false,
         description: 'show timestamp'
       })
-  })
+  }).argv
 
 var showTimestamp = (argv.timestamp ? true : false)
 
