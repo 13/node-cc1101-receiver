@@ -14,7 +14,7 @@ const dayjs = require('dayjs');
       default: '/dev/ttyUSB0'
     })
   }).argv*/
-require('yargs')
+const argv = require('yargs')
   .command('$0 [tty]', 'start the app',(yargs) => {
     yargs
       .positional('tty', {
