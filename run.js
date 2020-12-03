@@ -7,19 +7,12 @@ const mqtt_address = '192.168.22.5'
 const dayjs = require('dayjs');
 
 // yargs
-/*const argv = require('yargs')
-  .usage('$0 <tty>', 'start the serial port', (yargs) => {
-    yargs.positional('tty', {
-      describe: 'the serial port that your application should bind to',
-      default: '/dev/ttyUSB0'
-    })
-  }).argv*/
 const argv = require('yargs')
   .command('$0 [tty]', 'start the app',(yargs) => {
     yargs
       .positional('tty', {
         describe: 'serial port',
-        default: '/dev/ttyUSB0'
+        //default: '/dev/ttyUSB0'
       })
       .option('timestamp', {
         alias: 't',
