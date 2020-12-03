@@ -25,16 +25,43 @@ const dayjs = require('dayjs')
 */
 
 const argv = require('yargs')(process.argv.slice(2))
-    .usage('Usage: $0 <tty>')
-    .alias('tty')
-    .alias('t', 'timestamp')
-    .alias('m', 'mqtt')
-    .argv
+  // version
+  .alias('v', 'version')
+  .version(function() { return require('../package').version; })
+  .describe('v', 'show version information')
+  // help text
+  .alias('h', 'help')
+  .help('help')
+  .usage('Usage: $0 -p [tty]')
+  // tty port
+  .option('p', {
+      alias : 'port',
+      describe: 'tty port',
+      type: 'string', /* array | boolean | string */
+      nargs: 1,
+      demand: true,
+      demand: 'tty port is required',
+      default: '/dev/ttyACM0'
+      // also: count:true, requiresArg:true
+  })
+  .option('t', {
+      alias : 'timestamp',
+      describe: 'timestamp',
+      //default: false
+      // also: count:true, requiresArg:true
+  })
+  .option('m', {
+      alias : 'mqtt',
+      describe: 'mqtt server address',
+      type: 'string',
+      //default: false
+      // also: count:true, requiresArg:true
+  }).argv
 
-console.log('tty: ' + argv.tty + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
+console.log('tty: ' + argv.port + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
 
 // configuration
-const tty = argv.tty || '/dev/ttyACM0'
+const tty = argv.port || '/dev/ttyACM0'
 const mqtt_address = argv.mqtt || '192.168.22.5'
 const showTimestamp = (argv.timestamp ? true : false)
 
