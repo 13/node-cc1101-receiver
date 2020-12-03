@@ -14,28 +14,19 @@ const dayjs = require('dayjs');
       default: '/dev/ttyUSB0'
     })
   }).argv*/
-/*const argv = require('yargs')(process.argv.slice(2))
-    .usage('Usage: $0 <tty>')
-    .command('tty', 'serial port')
-    .example('$0 /dev/ttyUSB0', 'the serial port that your application should bind to')
-    .alias('t', 'timestamp')
-    .default('t', false)
-    .demandOption(['tty'])
-    .argv;*/
-const argv = require('yargs')
-  .usage('$0 <tty> [args]')
-  .command('tty', 'serial port', (yargs) => {
-    yargs.positional('tty', {
-      type: 'string',
-      default: '/dev/ttyUSB0',
-      describe: 'the serial port that your application should bind to'
-    })
-  }, function (argv) {
-    console.log('hello', argv.name, 'welcome to yargs!')
+require('yargs')
+  .command('$0 [tty]', 'start the app',(yargs) => {
+    yargs
+      .positional('tty', {
+        describe: 'serial port',
+        default: '/dev/ttyUSB0'
+      })
+      .option('timestamp', {
+        alias: 't',
+        default: false,
+        description: 'show timestamp'
+      })
   })
-  .help()
-  .argv
-
 
 var showTimestamp = (argv.t ? true : false)
 
