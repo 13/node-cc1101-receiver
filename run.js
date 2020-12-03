@@ -37,13 +37,14 @@ const argv = require('yargs')(process.argv.slice(2))
       nargs: 1,
       demand: true,
       demand: 'tty port is required',
-      default: '/dev/ttyACM0'
-      // also: count:true, requiresArg:true
+      //default: '/dev/ttyACM0',
+      requiresArg:true
   })
   .option('t', {
       alias : 'timestamp',
       describe: 'show timestamp',
       nargs: 0,
+      default: false,
       requiresArg: false
   })
   .option('m', {
@@ -59,7 +60,7 @@ console.log('tty: ' + argv.port + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.
 
 // configuration
 const tty = argv.port || '/dev/ttyACM0'
-const mqtt_address = argv.mqtt || '192.168.22.5'
+const mqtt_address = argv.mqtt || 'localhost'
 const showTimestamp = (argv.timestamp ? true : false)
 
 // fs
