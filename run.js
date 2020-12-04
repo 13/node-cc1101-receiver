@@ -74,18 +74,18 @@ var lastMsgDate = new Date()
 
 // serialport
 port.on('open', () => {
-  console.log(getTime() + '--> serial port open')
+  console.log(getTime() + '--> serial port opened (' + tty + ')')
   setTimeout(keepAlive, 1 * 60 * 1000)
 })
 
 port.on('close', () => {
-  console.log(getTime() + '--> serial port closed')
+  console.log(getTime() + '--> serial port closed (' + tty + ')')
   //reConnect()
   process.exit(1)
 })
 
 port.on('error', (err) => {
-  console.log(getTime() + '--> serial port error')
+  console.log(getTime() + '--> serial port error (' + tty + ')')
   console.log('error', err)
   //reConnect()
 })
