@@ -2,15 +2,44 @@
 node serial arduino cc1101 parser and mqtt publisher
 
 ## Installation
+
 ```bash
   git clone https://github.com/13/node-cc1101-receiver.git
 
   npm install
 
-  node run.js -p <tty port>
+  node run.js -p <ttyport>
+```
+
+## Configuration
+
+```bash
+  node run.js -p 'tty port'
+              -m 'mqtt address'
+              -t 'show timestamp'
+```
+
+## Description
+
+The cc1101-sender emits a 60 characters string.
+This script parses the cc1101 string, converts to int or float, generates a json and sends to mqtt.
+
+```
+M,N:87,T1:29,H1:817,T2:25,T3:42,P1:9260,A1:753,V1:38,E:00000
+```
+
+```
+M = acknowledge character
+N = node number
+T = temperature
+H = humidity
+P = pressure
+A = altitude
+V = voltage
+E = string filler until 60 chars
+
+, = delimiter
 ```
 
 ## TODO
-- [x] yargs add mqtt-host
-- [x] yargs add -t switch to show/hide timestamps for systemd service
-- [x] add systemd service file
+- [ ] ...
