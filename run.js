@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-// dayjs
-const dayjs = require('dayjs')
-
 // yargs
 const argv = require('yargs')(process.argv.slice(2))
   // help text
@@ -45,6 +42,7 @@ const mqtt_address = argv.mqtt || 'localhost'
 const showTimestamp = (argv.timestamp ? true : false)
 
 // verbose
+VERBOSE_LEVEL = argv.verbose;
 function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
 function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
@@ -67,6 +65,9 @@ var parser_sp = port.pipe(new Readline({ delimiter: '\n' }))
 // mqtt
 const mqtt = require('mqtt')
 const client = mqtt.connect('mqtt://' + mqtt_address)
+
+// dayjs
+const dayjs = require('dayjs')
 
 // keepalive
 var lastMsgDate = new Date()
