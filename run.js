@@ -73,22 +73,22 @@ var lastMsgDate = new Date()
 
 // start msg
 console.log(getTime() + '--> node-cc1101-receiver starting ...')
-console.log(getTime() + '--> tty: '+ tty + ' - mqtt: ' + mqtt_address)
+console.log(getTime() + '--> tty: '+ tty + ', mqtt: ' + mqtt_address)
 
 // serialport
 port.on('open', () => {
-  console.log(getTime() + '--> serial port opened (' + tty + ')')
+  console.log(getTime() + '--> serial port opened')
   setTimeout(keepAlive, 1 * 60 * 1000)
 })
 
 port.on('close', () => {
-  console.log(getTime() + '--> serial port closed (' + tty + ')')
+  console.log(getTime() + '--> serial port closed')
   //reConnect()
   process.exit(1)
 })
 
 port.on('error', (err) => {
-  console.log(getTime() + '--> serial port error (' + tty + ')')
+  console.log(getTime() + '--> serial port error')
   console.log('error', err)
   //reConnect()
 })
