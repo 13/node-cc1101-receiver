@@ -48,8 +48,8 @@ function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); 
 function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
 
 // start msg
-serial.log(getTime() + '--> node-cc1101-receiver starting ...')
-serial.log(getTime() + '--> tty: '+ tty + ' - mqtt: ' + mqtt_address)
+console.log(getTime() + '--> node-cc1101-receiver starting ...')
+console.log(getTime() + '--> tty: '+ tty + ' - mqtt: ' + mqtt_address)
 
 // fs
 const fs = require("fs")
