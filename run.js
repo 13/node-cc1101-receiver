@@ -9,6 +9,8 @@ const argv = require('yargs')(process.argv.slice(2))
   .alias('h', 'help')
   .help('help')
   .usage('Usage: $0 -p [tty]')
+  .count('verbose')
+  .alias('v', 'verbose')
   // tty port
   .option('p', {
       alias : 'port',
@@ -41,6 +43,11 @@ const argv = require('yargs')(process.argv.slice(2))
 const tty = argv.port || '/dev/ttyACM0'
 const mqtt_address = argv.mqtt || 'localhost'
 const showTimestamp = (argv.timestamp ? true : false)
+
+// verbose
+function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
+function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
+function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
 
 // fs
 const fs = require("fs")
@@ -114,14 +121,17 @@ parser_sp.on('data', data =>{
     client.publish('sensors/' + mySensor.N + '/json', JSON.stringify(mySensor))
   } else {
     if (data.startsWith("> ") || data.length == 0){
-      console.log(getTime() + "- " + data.substr(2))
+      DEBUG(getTime() + "- " + data.substr(2))    
+      //console.log(getTime() + "- " + data.substr(2))
     } else {
 	// DEBUG MSG
         if (data.startsWith("R") || data.startsWith("W")){
-          console.log(getTime() + "- " + data)
+	  DEBUG(getTime() + "- " + data)
+          //console.log(getTime() + "- " + data)
         } else {
           //console.log(getTime() + "- ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
-          console.log(getTime() + "- ERR: " + data)
+	  DEBUG(getTime() + "- ERR: " + data)
+         // console.log(getTime() + "- ERR: " + data)
 	}
     }
   }
@@ -156,13 +166,17 @@ function keepAlive() {
   var TWO_MIN= 2 * 60 * 1000
   var ONE_MIN= 2 * 60 * 1000
   if((keepAliveDate - new Date(lastMsgDate)) > FIVE_MIN) {
-    console.log(getTime() + '--> timeout!')
-    console.log((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
-    console.log(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")
+    WARN(getTime() + '--> timeout!')
+    DEBUG((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
+    DEBUG(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")	  
+    //console.log(getTime() + '--> timeout!')
+    //console.log((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
+    //console.log(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")
     port.close()
     //reConnect()
   } else {
-    console.log(getTime() + '--> MARK')
+    DEBUG(getTime() + '--> MARK')
+    //console.log(getTime() + '--> MARK')
   }
   setTimeout(keepAlive, 1 * 60 * 1000)
 }
