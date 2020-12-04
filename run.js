@@ -34,7 +34,6 @@ const argv = require('yargs')(process.argv.slice(2))
       default: 'localhost',
       requiresArg: true
   }).argv
-//console.log('tty: ' + argv.port + ', ts: ' + argv.timestamp + ', mqtt: ' + argv.mqtt)
 
 // configuration
 const tty = argv.port || '/dev/ttyACM0'
@@ -47,9 +46,8 @@ function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); 
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
 function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
 
-// start msg
-console.log(getTime() + '--> node-cc1101-receiver starting ...')
-console.log(getTime() + '--> tty: '+ tty + ' - mqtt: ' + mqtt_address)
+// dayjs
+const dayjs = require('dayjs')
 
 // fs
 const fs = require("fs")
@@ -70,11 +68,12 @@ var parser_sp = port.pipe(new Readline({ delimiter: '\n' }))
 const mqtt = require('mqtt')
 const client = mqtt.connect('mqtt://' + mqtt_address)
 
-// dayjs
-const dayjs = require('dayjs')
-
 // keepalive
 var lastMsgDate = new Date()
+
+// start msg
+console.log(getTime() + '--> node-cc1101-receiver starting ...')
+console.log(getTime() + '--> tty: '+ tty + ' - mqtt: ' + mqtt_address)
 
 // serialport
 port.on('open', () => {
