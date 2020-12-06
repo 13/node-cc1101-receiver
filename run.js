@@ -72,33 +72,33 @@ const client = mqtt.connect('mqtt://' + mqtt_address)
 var lastMsgDate = new Date()
 
 // start msg
-console.log(getTime() + '--> node-cc1101-receiver starting ...')
-console.log(getTime() + '--> tty: '+ tty + ', mqtt: ' + mqtt_address)
+console.log(getTime() + 'node-cc1101-receiver starting ...')
+console.log(getTime() + 'tty: '+ tty + ', mqtt: ' + mqtt_address)
 
 // serialport
 port.on('open', () => {
-  console.log(getTime() + '--> serial port opened')
+  console.log(getTime() + 'serial port opened')
   setTimeout(keepAlive, 1 * 60 * 1000)
 })
 
 port.on('close', () => {
-  console.log(getTime() + '--> serial port closed')
+  console.log(getTime() + 'serial port closed')
   //reConnect()
   process.exit(1)
 })
 
 port.on('error', (err) => {
-  console.log(getTime() + '--> serial port error')
+  console.log(getTime() + 'serial port error')
   console.log('error', err)
   //reConnect()
 })
 
 // check for connection errors or drops and reconnect
 var reConnect = function () {
-  console.log('--> reconnecting ...')
+  console.log('reconnecting ...')
   port.close()
   setTimeout(function(){
-    console.log('--> trying ...')
+    console.log('trying ...')
     port = new SerialPort(tty, { baudRate: 9600 })
   }, 5000)
 }
@@ -110,7 +110,7 @@ parser_sp.on('data', data =>{
 
   //if (hexToUtf8(data.substring(0,2)) == 'M'){
   if (hexToUtf8(data).startsWith("M,")) {
-    console.log(getTime() + "--> hexToUtf8")
+    console.log(getTime() + "hexToUtf8")
     console.log(getTime() + "- " + data)
     data = hexToUtf8(data)
   }
@@ -170,17 +170,17 @@ function keepAlive() {
   var TWO_MIN= 2 * 60 * 1000
   var ONE_MIN= 2 * 60 * 1000
   if((keepAliveDate - new Date(lastMsgDate)) > FIVE_MIN) {
-    WARN(getTime() + '--> timeout!')
+    WARN(getTime() + 'timeout!')
     DEBUG((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
     DEBUG(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")	  
-    //console.log(getTime() + '--> timeout!')
+    //console.log(getTime() + 'timeout!')
     //console.log((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
     //console.log(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")
     port.close()
     //reConnect()
   } else {
-    DEBUG(getTime() + '--> MARK')
-    //console.log(getTime() + '--> MARK')
+    DEBUG(getTime() + 'MARK')
+    //console.log(getTime() + 'MARK')
   }
   setTimeout(keepAlive, 1 * 60 * 1000)
 }
