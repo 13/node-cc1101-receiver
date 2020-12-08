@@ -111,7 +111,7 @@ parser_sp.on('data', data =>{
   //if (hexToUtf8(data.substring(0,2)) == 'M'){
   if (hexToUtf8(data).startsWith("M,")) {
     console.log(getTime() + "hexToUtf8")
-    console.log(getTime() + "- " + data)
+    console.log(getTime() + "" + data)
     data = hexToUtf8(data)
   }
 
@@ -119,23 +119,23 @@ parser_sp.on('data', data =>{
   //const isASCII = string => /^[\x00-\x7F]*$/.test(string)
   data = data.replace(/(\r\n|\n|\r)/gm,"").trim()
   if (isASCIIMUH(data) && data.startsWith("M,")) {
-    console.log(getTime() + "- " + data)
+    console.log(getTime() + "" + data)
     mySensor = dataToJSON(data)
     delete mySensor.E
     client.publish('sensors/' + mySensor.N + '/json', JSON.stringify(mySensor))
   } else {
     if (data.startsWith("> ") || data.length == 0){
-      DEBUG(getTime() + "- " + data.substr(2))    
-      //console.log(getTime() + "- " + data.substr(2))
+      DEBUG(getTime() + "" + data.substr(2))    
+      //console.log(getTime() + "" + data.substr(2))
     } else {
 	// DEBUG MSG
         if (data.startsWith("R") || data.startsWith("W")){
-	  DEBUG(getTime() + "- " + data)
-          //console.log(getTime() + "- " + data)
+	  DEBUG(getTime() + "" + data)
+          //console.log(getTime() + "" + data)
         } else {
-          //console.log(getTime() + "- ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
-	  DEBUG(getTime() + "- ERR: " + data)
-         // console.log(getTime() + "- ERR: " + data)
+          //console.log(getTime() + "ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
+	  DEBUG(getTime() + "ERR: " + data)
+         // console.log(getTime() + "ERR: " + data)
 	}
     }
   }
