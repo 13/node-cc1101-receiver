@@ -78,7 +78,7 @@ console.log(getTime() + 'tty: '+ tty + ', mqtt: ' + mqtt_address)
 // serialport
 port.on('open', () => {
   console.log(getTime() + 'serial port opened')
-  setTimeout(keepAlive, 1 * 60 * 1000)
+  //setTimeout(keepAlive, 1 * 60 * 1000)
 })
 
 port.on('close', () => {
