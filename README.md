@@ -8,6 +8,7 @@ node serial arduino cc1101 parser and mqtt publisher
 
 * An Arduino with a CC1101 module as a receiver
 * An Arduino with a CC1101 module as a transmitter
+* A mqtt server
 
 ### Installation
 
