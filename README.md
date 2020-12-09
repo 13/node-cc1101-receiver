@@ -23,9 +23,7 @@ This script parses the cc1101 string, converts to int or float, generates a json
 
 ```
 M,N:87,T1:29,H1:817,T2:25,T3:42,P1:9260,A1:753,V1:38,E:00000
-```
 
-```
 M = acknowledge character
 N = node number
 T = temperature
