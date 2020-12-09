@@ -5,6 +5,7 @@ node serial arduino cc1101 parser and mqtt publisher
 ## Contents
 
  * [About](#about)
+   * [Built With](#built-with)
  * [Getting Started](#getting-started)
    * [Prerequisites](#prerequisites)
    * [Installation](#installation)
@@ -37,6 +38,11 @@ E = string filler until 60 chars
 , = delimiter
 ```
 
+### Built With
+
+* [mqtt](https://github.com/mqttjs/MQTT.js)
+* [serialport](https://github.com/serialport/node-serialport)
+
 ## Getting Started
 
 ### Prerequisites
@@ -47,18 +53,18 @@ E = string filler until 60 chars
 
 ### Installation
 
-```bash
-  git clone https://github.com/13/node-cc1101-receiver.git
+```sh
+git clone https://github.com/13/node-cc1101-receiver.git
 
-  npm install
+npm install
 ```
 
 ## Usage
 
-```bash
-  node run.js -p 'tty port'
-              -m 'mqtt address'
-              -t 'show timestamp'
+```sh
+node run.js -p 'tty port'
+            -m 'mqtt address'
+            -t 'show timestamp'
 ```
  
 ## Roadmap
