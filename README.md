@@ -34,6 +34,8 @@ node serial arduino cc1101 parser and mqtt publisher
 
 ## Synopsis
 
+[(Back to top)](#contents)
+
 The cc1101-sender emits a 61 characters string.
 This script parses the cc1101 string, converts to int or float, generates a json and sends to mqtt.
 
@@ -56,11 +58,31 @@ E = string filler until 60 chars
 
 ## Release History
 
+[(Back to top)](#contents)
+
 * 1.0.0
     * Initial release
     
 ## TODO
 
-[(Back to top)](#table-of-contents)
+[(Back to top)](#contents)
 
 - [ ] ...
+
+## Authors
+
+[(Back to top)](#contents)
+
+* **13** - *Initial work* - [13](https://github.com/13)
+
+## License
+
+[(Back to top)](#contents)
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+[(Back to top)](#contents)
+
+* Thank you
