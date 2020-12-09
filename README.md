@@ -2,6 +2,12 @@
 
 node serial arduino cc1101 parser and mqtt publisher
 
+## Contents
+
+ * [Installation](#installation)
+ * [Usage](#usage)
+ * [Todo](#todo)
+
 ## Getting Started
 
 ### Prerequisites
@@ -54,4 +60,7 @@ E = string filler until 60 chars
     * Initial release
     
 ## TODO
+
+[(Back to top)](#table-of-contents)
+
 - [ ] ...
