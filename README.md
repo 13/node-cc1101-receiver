@@ -1,17 +1,23 @@
 # node-cc1101-receiver
+
 node serial arduino cc1101 parser and mqtt publisher
 
-## Installation
+## Getting Started
+
+### Prerequisites
+
+* An Arduino with a CC1101 module as a receiver
+* An Arduino with a CC1101 module as a transmitter
+
+### Installation
 
 ```bash
   git clone https://github.com/13/node-cc1101-receiver.git
 
   npm install
-
-  node run.js -p <ttyport>
 ```
 
-## Configuration
+## Usage
 
 ```bash
   node run.js -p 'tty port'
@@ -19,9 +25,9 @@ node serial arduino cc1101 parser and mqtt publisher
               -t 'show timestamp'
 ```
 
-## Description
+## Synopsis
 
-The cc1101-sender emits a 60 characters string.
+The cc1101-sender emits a 61 characters string.
 This script parses the cc1101 string, converts to int or float, generates a json and sends to mqtt.
 
 ```
@@ -41,5 +47,10 @@ E = string filler until 60 chars
 , = delimiter
 ```
 
+## Release History
+
+* 1.0.0
+    * Initial release
+    
 ## TODO
 - [ ] ...
