@@ -63,6 +63,7 @@ npm install
 node run.js -p 'tty port'
             -m 'mqtt address'
             -t 'show timestamp'
+            -v 'verbose'
 ```
  
 ## Roadmap
