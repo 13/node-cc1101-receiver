@@ -6,8 +6,6 @@ const argv = require('yargs')(process.argv.slice(2))
   .alias('h', 'help')
   .help('help')
   .usage('Usage: $0 -p [tty]')
-  .count('verbose')
-  .alias('v', 'verbose')
   // tty port
   .option('p', {
       alias : 'port',
@@ -22,6 +20,14 @@ const argv = require('yargs')(process.argv.slice(2))
   .option('t', {
       alias : 'timestamp',
       describe: 'show timestamp',
+      nargs: 0,
+      //default: false,
+      requiresArg: false
+  })
+  .option('v', {
+      alias : 'verbose',
+      describe: 'show verbose',
+      count: true,
       nargs: 0,
       //default: false,
       requiresArg: false
