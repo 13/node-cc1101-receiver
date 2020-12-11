@@ -132,16 +132,13 @@ parser_sp.on('data', data =>{
   } else {
     if (data.startsWith("> ") || data.length == 0){
       DEBUG(getTime() + "" + data.substr(2))    
-      //console.log(getTime() + "" + data.substr(2))
     } else {
 	// DEBUG MSG
         if (data.startsWith("R") || data.startsWith("W")){
 	  DEBUG(getTime() + "" + data)
-          //console.log(getTime() + "" + data)
         } else {
-          //console.log(getTime() + "ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
+          //DEBUG(getTime() + "ERR: " + data.replace(/(\r\n|\n|\r)/gm,"").trim())
 	  DEBUG(getTime() + "ERR: " + data)
-         // console.log(getTime() + "ERR: " + data)
 	}
     }
   }
@@ -179,14 +176,10 @@ function keepAlive() {
     WARN(getTime() + 'timeout!')
     DEBUG((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
     DEBUG(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")	  
-    //console.log(getTime() + 'timeout!')
-    //console.log((keepAliveDate - new Date(lastMsgDate))/1000 + " seconds")
-    //console.log(((keepAliveDate - new Date(lastMsgDate))/1000)*60 + " minutes")
     port.close()
     //reConnect()
   } else {
     DEBUG(getTime() + 'MARK')
-    //console.log(getTime() + 'MARK')
   }
   setTimeout(keepAlive, 1 * 60 * 1000)
 }
