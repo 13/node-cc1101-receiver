@@ -1,6 +1,8 @@
 [Unit]
 Description=node cc1101 receiver
-Requires=After=docker.service
+After=docker.service
+BindsTo=docker.service
+ReloadPropagatedFrom=docker.service
 
 [Service]
 Type=simple
