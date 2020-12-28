@@ -185,9 +185,5 @@ function keepAlive() {
 }
 
 function getTime() {
-  if (showTimestamp) {
-    return dayjs().format('HH:mm:ss.SSS ')
-  } else {
-    return ''
-  }
+  return (showTimestamp ? dayjs().format('HH:mm:ss.SSS ') : '')
 }
