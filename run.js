@@ -53,11 +53,11 @@ function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); 
 function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
 
 // dayjs
-const dayjs = require('dayjs')
+import dayjs from 'dayjs';
 
 // fs
-const fs = require("fs")
-fs.access(tty, (err) => {
+import { access } from "fs";
+access(tty, (err) => {
   if (err) {
     console.log('error', err)
     process.exit(1)
@@ -65,14 +65,14 @@ fs.access(tty, (err) => {
 })
 
 // serial
-const SerialPort = require('serialport')
-const Readline = require('@serialport/parser-readline')
+import SerialPort from 'serialport';
+import Readline from '@serialport/parser-readline';
 var port = new SerialPort(tty, { baudRate: 9600 })
 var parser_sp = port.pipe(new Readline({ delimiter: '\n' }))
 
 // mqtt
-const mqtt = require('mqtt')
-const client = mqtt.connect('mqtt://' + mqtt_address)
+import { connect } from 'mqtt';
+const client = connect('mqtt://' + mqtt_address)
 
 // keepalive
 var lastMsgDate = new Date()
