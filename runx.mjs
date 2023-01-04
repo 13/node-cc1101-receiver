@@ -4,12 +4,37 @@ import * as mqtt from 'mqtt';
 import SerialPort from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import dayjs from 'dayjs';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 // import fs from 'node:fs/promises';
 
+const { argv } = yargs(hideBin(process.argv))
+  .option('port', {
+    alias: 'p',
+    type: 'string',
+    default: '/dev/ttyACM0',
+    nargs: 1,
+    describe: 'The tty port number to use',
+  })
+  .option('timestamp', {
+    alias: 't',
+    type: 'boolean',
+    requiresArg: false,
+    nargs: 0,
+    describe: 'The timestamp to use',
+  })
+  .option('mqtt', {
+    alias: 'm',
+    type: 'string',
+    default: '192.168.22.5',
+    describe: 'The MQTT server URL to use',
+  })
+  .help();
+
 // config
-const tty = '/dev/ttyACM0';
-const mqttAddress = '192.168.22.5';
-const showTimestamp = true;
+const tty = argv.port || '/dev/ttyACM0';
+const mqttAddress = argv.mqtt || '192.168.22.5';
+const showTimestamp = argv.timestamp || false;
 
 // serialport
 const port = new SerialPort(`${tty}`, { baudRate: 9600 });
@@ -20,7 +45,7 @@ const mqttClient = mqtt.connect(`mqtt://${mqttAddress}`);
 
 // functions
 function getTime() {
-  return (showTimestamp ? dayjs().format('HH:mm:ss.SSS ') : '');
+  return (showTimestamp ? dayjs().format('HH:mm:ss.SSS') : '');
 }
 
 // start msg
@@ -38,8 +63,8 @@ port.on('close', () => {
 });
 
 port.on('error', (err) => {
-  console.log(`${getTime()} serial port error`);
-  console.log('error', err);
+  console.log(`${getTime()} serial port error`, err);
+  process.exit(2);
 });
 
 parser.on('data', (data) => {
