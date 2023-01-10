@@ -71,7 +71,8 @@ parser.on('data', (data) => {
   let datax = data;
   const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
   datax = datax.replace(/(\r\n|\n|\r)/gm, '').trim();
-  if (isASCIIMUH(datax) && datax.startsWith('M,')) {
+  if (isASCIIMUH(datax) && datax.startsWith('M,') && 
+      (datax.split(',').length - 1 === datax.split(':').length - 1)) {
     console.log(`${getTime()}${datax}`);
     const pairs = datax.replace(/(MUH,|M,|\r\n|\n|\r)/gm, '').trim().split(',');
     const sensor = pairs.reduce((result, pair) => {
