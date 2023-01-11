@@ -23,6 +23,13 @@ const { argv } = yargs(hideBin(process.argv))
     nargs: 0,
     describe: 'The timestamp to use',
   })
+  .option('debug', {
+    alias: 'd',
+    type: 'boolean',
+    requiresArg: false,
+    nargs: 0,
+    describe: 'Show debug messages',
+  })
   .option('mqtt', {
     alias: 'm',
     type: 'string',
@@ -35,6 +42,7 @@ const { argv } = yargs(hideBin(process.argv))
 const tty = argv.port || '/dev/ttyACM0';
 const mqttAddress = argv.mqtt || '192.168.22.5';
 const showTimestamp = argv.timestamp || false;
+const showDebug = argv.debug || false;
 
 // serialport
 const port = new SerialPort(`${tty}`, { baudRate: 9600 });
@@ -71,6 +79,12 @@ parser.on('data', (data) => {
   let datax = data;
   const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
   datax = datax.replace(/(\r\n|\n|\r)/gm, '').trim();
+  if (datax.startsWith('M,')){
+    datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
+  }
+  if (showDebug) {
+    console.log(`${getTime()} DEBUG: ${datax}`);
+  }
   if (isASCIIMUH(datax) && datax.startsWith('M,') && 
       (datax.split(',').length - 1 === datax.split(':').length - 1)) {
     console.log(`${getTime()}${datax}`);
