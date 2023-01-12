@@ -79,16 +79,18 @@ parser.on('data', (data) => {
   let datax = data;
   const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
   datax = datax.replace(/(\r\n|\n|\r)/gm, '').trim();
-  if (datax.startsWith('M,')){
+
+  if (datax.startsWith('Z:')) {
     datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-  }
-  if (showDebug) {
-    console.log(`${getTime()} DEBUG: ${datax}`);
-  }
-  if (isASCIIMUH(datax) && datax.startsWith('M,') && 
-      (datax.split(',').length - 1 === datax.split(':').length - 1)) {
+    let z_start_idx = str.indexOf("Z:") + 2;
+    let z_end_idx = str.indexOf(",", z_start_idx);
+    let z_length = str.substring(z_start_idx, z_end_idx);
+    if (Number(z_length) === datax.length()){
+      console.log(`${getTime()} OK Z: ${datax}`);
+
+  if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
     console.log(`${getTime()}${datax}`);
-    const pairs = datax.replace(/(MUH,|M,|\r\n|\n|\r)/gm, '').trim().split(',');
+    const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
     const sensor = pairs.reduce((result, pair) => {
       const [key, value] = pair.split(':');
       const resultx = result;
@@ -101,8 +103,15 @@ parser.on('data', (data) => {
       }
       return resultx;
     }, {});
-    delete sensor.E;
+    // delete sensor.E;
     // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
     mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
+  }
+
+    } else {
+      console.log(`${getTime()} ERR Z LENGTH: ${datax}`);
+    }
+  } else {
+    console.log(`${getTime()} ERR Z: ${datax}`);
   }
 });
