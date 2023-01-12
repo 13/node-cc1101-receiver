@@ -42,7 +42,7 @@ const { argv } = yargs(hideBin(process.argv))
 const tty = argv.port || '/dev/ttyACM0';
 const mqttAddress = argv.mqtt || '192.168.22.5';
 const showTimestamp = argv.timestamp || false;
-const showDebug = argv.debug || false;
+// const showDebug = argv.debug || false;
 
 // serialport
 const port = new SerialPort(`${tty}`, { baudRate: 9600 });
@@ -82,36 +82,35 @@ parser.on('data', (data) => {
 
   if (datax.startsWith('Z:')) {
     datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-    let z_start_idx = str.indexOf("Z:") + 2;
-    let z_end_idx = str.indexOf(",", z_start_idx);
-    let z_length = str.substring(z_start_idx, z_end_idx);
-    if (Number(z_length) === datax.length()){
+    const zStartIdx = datax.indexOf('Z:') + 2;
+    const zEndIdx = datax.indexOf(',', zStartIdx);
+    const zLength = datax.substring(zStartIdx, zEndIdx);
+    if (Number(zLength) === datax.length()) {
       console.log(`${getTime()} OK Z: ${datax}`);
 
-  if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
-    console.log(`${getTime()}${datax}`);
-    const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
-    const sensor = pairs.reduce((result, pair) => {
-      const [key, value] = pair.split(':');
-      const resultx = result;
-      if ((/^[N]/i.test(key))) {
-        resultx[key] = value;
-      } else if ((/^[T,H,P,V]\d/i.test(key))) {
-        resultx[key] = parseFloat(value / 10);
-      } else {
-        resultx[key] = parseInt(value, 10);
+      if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
+        console.log(`${getTime()}${datax}`);
+        const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
+        const sensor = pairs.reduce((result, pair) => {
+          const [key, value] = pair.split(':');
+          const resultx = result;
+          if ((/^[N]/i.test(key))) {
+            resultx[key] = value;
+          } else if ((/^[T,H,P,V]\d/i.test(key))) {
+            resultx[key] = parseFloat(value / 10);
+          } else {
+            resultx[key] = parseInt(value, 10);
+          }
+          return resultx;
+        }, {});
+        // delete sensor.E;
+        // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
+        mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
       }
-      return resultx;
-    }, {});
-    // delete sensor.E;
-    // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
-    mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
-  }
-
     } else {
-      console.log(`${getTime()} ERR Z LENGTH: ${datax}`);
+      console.log(`${getTime()} ERR Z LENGTH: ${zLength} ${datax}`);
     }
   } else {
-    console.log(`${getTime()} ERR Z: ${datax}`);
+    console.log(`${getTime()} ERR Z MATCH: ${datax}`);
   }
 });
