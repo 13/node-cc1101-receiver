@@ -42,7 +42,7 @@ const { argv } = yargs(hideBin(process.argv))
 const tty = argv.port || '/dev/ttyACM0';
 const mqttAddress = argv.mqtt || '192.168.22.5';
 const showTimestamp = argv.timestamp || false;
-// const showDebug = argv.debug || false;
+const showDebug = argv.debug || false;
 
 // serialport
 const port = new SerialPort(`${tty}`, { baudRate: 9600 });
@@ -85,8 +85,11 @@ parser.on('data', (data) => {
     const zStartIdx = datax.indexOf('Z:') + 2;
     const zEndIdx = datax.indexOf(',', zStartIdx);
     const zLength = datax.substring(zStartIdx, zEndIdx);
-    if (Number(zLength) === datax.length()) {
+    //if (Number(zLength) === datax.length) {
+
+    if (showDebug) {
       console.log(`${getTime()} OK Z: ${datax}`);
+    }
 
       if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
         console.log(`${getTime()}${datax}`);
@@ -107,9 +110,9 @@ parser.on('data', (data) => {
         // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
         mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
       }
-    } else {
+    /*} else {
       console.log(`${getTime()} ERR Z LENGTH: ${zLength} ${datax}`);
-    }
+    }*/
   } else {
     console.log(`${getTime()} ERR Z MATCH: ${datax}`);
   }
