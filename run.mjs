@@ -82,37 +82,37 @@ parser.on('data', (data) => {
 
   if (datax.startsWith('Z:')) {
     datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-    const zStartIdx = datax.indexOf('Z:') + 2;
-    const zEndIdx = datax.indexOf(',', zStartIdx);
-    const zLength = datax.substring(zStartIdx, zEndIdx);
-    //if (Number(zLength) === datax.length) {
+    // const zStartIdx = datax.indexOf('Z:') + 2;
+    // const zEndIdx = datax.indexOf(',', zStartIdx);
+    // const zLength = datax.substring(zStartIdx, zEndIdx);
+    // if (Number(zLength) === datax.length) {
 
     if (showDebug) {
       console.log(`${getTime()} OK Z: ${datax}`);
     }
 
-      if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
-        console.log(`${getTime()}${datax}`);
-        const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
-        const sensor = pairs.reduce((result, pair) => {
-          const [key, value] = pair.split(':');
-          const resultx = result;
-          if ((/^[N]/i.test(key))) {
-            resultx[key] = value;
-          } else if ((/^[T,H,P,V]\d/i.test(key))) {
-            resultx[key] = parseFloat(value / 10);
-          } else {
-            resultx[key] = parseInt(value, 10);
-          }
-          return resultx;
-        }, {});
-        // delete sensor.E;
-        // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
-        mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
-      }
-    /*} else {
+    if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
+      console.log(`${getTime()}${datax}`);
+      const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
+      const sensor = pairs.reduce((result, pair) => {
+        const [key, value] = pair.split(':');
+        const resultx = result;
+        if ((/^[N]/i.test(key))) {
+          resultx[key] = value;
+        } else if ((/^[T,H,P,V]\d/i.test(key))) {
+          resultx[key] = parseFloat(value / 10);
+        } else {
+          resultx[key] = parseInt(value, 10);
+        }
+        return resultx;
+      }, {});
+      delete sensor.Z;
+      // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
+      mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
+    }
+    /* } else {
       console.log(`${getTime()} ERR Z LENGTH: ${zLength} ${datax}`);
-    }*/
+    } */
   } else {
     console.log(`${getTime()} ERR Z MATCH: ${datax}`);
   }
