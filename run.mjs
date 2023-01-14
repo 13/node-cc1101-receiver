@@ -82,19 +82,12 @@ parser.on('data', (data) => {
 
   if (datax.startsWith('Z:')) {
     datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-    // const zStartIdx = datax.indexOf('Z:') + 2;
-    // const zEndIdx = datax.indexOf(',', zStartIdx);
-    // const zLength = datax.substring(zStartIdx, zEndIdx);
-    // if (Number(zLength) === datax.length) {
-
-    if (showDebug) {
-      console.log(`${getTime()} OK Z: ${datax}`);
-    }
-
     if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
-      console.log(`${getTime()}${datax}`);
+      if (showDebug) {
+        console.log(`${getTime()}${datax}`);
+      }
       const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
-      const sensor = pairs.reduce((result, pair) => {
+      const packet = pairs.reduce((result, pair) => {
         const [key, value] = pair.split(':');
         const resultx = result;
         if ((/^[N]/i.test(key))) {
@@ -106,14 +99,16 @@ parser.on('data', (data) => {
         }
         return resultx;
       }, {});
-      delete sensor.Z;
-      // console.log(`${getTime()} sensors/${sensor.N}/json ${JSON.stringify(sensor)}`);
-      mqttClient.publish(`sensors/${sensor.N}/json`, JSON.stringify(sensor));
+      delete packet.Z;
+      console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
+      if (showDebug) {
+        console.log(`${getTime()}${datax}`);
+        console.log(`${getTime()} sensors/${packet.N}/json ${JSON.stringify(packet)}`);
+      }
+      mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
     }
-    /* } else {
-      console.log(`${getTime()} ERR Z LENGTH: ${zLength} ${datax}`);
-    } */
   } else {
     console.log(`${getTime()} ERR Z MATCH: ${datax}`);
   }
 });
+
