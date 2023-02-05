@@ -51,9 +51,14 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
 // mqtt
 const mqttClient = mqtt.connect(`mqtt://${mqttAddress}`);
 
-// functions
+// helper functions
 function getTime() {
   return (showTimestamp ? dayjs().format('HH:mm:ss.SSS ') : '');
+}
+
+function hasLettersNumbersColonComma(str) {
+  let regex = /^[a-zA-Z0-9,:]+$/;
+  return regex.test(str);
 }
 
 // start msg
@@ -67,18 +72,29 @@ port.on('open', () => {
 
 port.on('close', () => {
   console.log(`${getTime()}serial port closed`);
+  port.close();
   process.exit(1);
 });
 
 port.on('error', (err) => {
   console.log(`${getTime()}serial port error`, err);
+  port.close();
   process.exit(2);
 });
 
 parser.on('data', (data) => {
   let datax = data;
   const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
-  datax = datax.replace(/(\r\n|\n|\r)/gm, '').trim();
+  const isASCIIMUH_DBG = (string) => /^[A-Za-z0-9\s,.:-\[\]]*$/.test(string);
+
+  if (showDebug && isASCIIMUH_DBG(datax)) {
+    if (datax.startsWith('> ')) {
+      console.log(`${getTime()}${datax}`);
+    } else {
+      datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
+      console.log(`${getTime()}CLN: ${datax} >L:${datax.length}`);
+    }
+  }
 
   if (datax.startsWith('Z:')) {
     datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
@@ -103,7 +119,7 @@ parser.on('data', (data) => {
       } else {
         console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
       }
-      mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
+      // mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
     }
   } /*else {
     console.log(`${getTime()} ERR Z MATCH: ${datax}`);
