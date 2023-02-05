@@ -56,11 +56,6 @@ function getTime() {
   return (showTimestamp ? dayjs().format('HH:mm:ss.SSS ') : '');
 }
 
-function hasLettersNumbersColonComma(str) {
-  let regex = /^[a-zA-Z0-9,:]+$/;
-  return regex.test(str);
-}
-
 // start msg
 console.log(`${getTime()}node-cc1101-receiver starting ...`);
 console.log(`${getTime()}tty: ${tty}, mqtt: ${mqttAddress}`);
@@ -119,9 +114,7 @@ parser.on('data', (data) => {
       } else {
         console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
       }
-      // mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
+      mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
     }
-  } /*else {
-    console.log(`${getTime()} ERR Z MATCH: ${datax}`);
-  }*/
+  }
 });
