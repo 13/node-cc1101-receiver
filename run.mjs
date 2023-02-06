@@ -23,6 +23,13 @@ const { argv } = yargs(hideBin(process.argv))
     nargs: 0,
     describe: 'The timestamp to use',
   })
+  .option('verbose', {
+    alias: 'v',
+    type: 'boolean',
+    requiresArg: false,
+    nargs: 0,
+    describe: 'Show verbose messages',
+  })
   .option('debug', {
     alias: 'd',
     type: 'boolean',
@@ -42,6 +49,7 @@ const { argv } = yargs(hideBin(process.argv))
 const tty = argv.port || '/dev/ttyACM0';
 const mqttAddress = argv.mqtt || '192.168.22.5';
 const showTimestamp = argv.timestamp || false;
+const showVerbose = argv.verbose || false;
 const showDebug = argv.debug || false;
 
 // serialport
@@ -77,17 +85,17 @@ port.on('error', (err) => {
   process.exit(2);
 });
 
-parser.on('data', (data) => {
-  let datax = data;
+parser.on('data', (datax) => {
+  //let datax = data;
   const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
   const isASCIIMUH_DBG = (string) => /^[A-Za-z0-9\s,.:-\[\]]*$/.test(string);
 
-  if (showDebug && isASCIIMUH_DBG(datax)) {
+  if (showDebug) {
     if (datax.startsWith('> ')) {
       console.log(`${getTime()}${datax}`);
     } else {
       datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-      console.log(`${getTime()}CLN: ${datax} >L:${datax.length}`);
+      console.log(`${getTime()}${datax} L:${datax.length}`);
     }
   }
 
@@ -95,9 +103,9 @@ parser.on('data', (data) => {
     datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
     if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
       const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
-      const packet = pairs.reduce((result, pair) => {
+      const packet = pairs.reduce((resultx, pair) => {
         const [key, value] = pair.split(':');
-        const resultx = result;
+        //const resultx = result;
         if ((/^[N]/i.test(key))) {
           resultx[key] = value;
         } else if ((/^[T,H,P,V]\d/i.test(key))) {
@@ -108,13 +116,14 @@ parser.on('data', (data) => {
         return resultx;
       }, {});
       delete packet.Z;
-      if (showDebug) {
+      if (showVerbose) {
         console.log(`${getTime()}${datax}`);
         console.log(`${getTime()} sensors/${packet.N}/json ${JSON.stringify(packet)}`);
       } else {
         console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
       }
       mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
+      packet.N = "XX";
     }
   }
 });
