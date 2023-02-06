@@ -87,8 +87,9 @@ port.on('error', (err) => {
 
 parser.on('data', (datax) => {
   //let datax = data;
-  const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
-  const isASCIIMUH_DBG = (string) => /^[A-Za-z0-9\s,.:-\[\]]*$/.test(string);
+  const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*\d$/.test(string);
+  //const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
+  // const isASCIIMUH_DBG = (string) => /^[A-Za-z0-9\s,.:-\[\]]*$/.test(string);
 
   if (showDebug) {
     if (datax.startsWith('> ')) {
