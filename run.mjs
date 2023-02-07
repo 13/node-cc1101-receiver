@@ -101,9 +101,12 @@ parser.on('data', (datax) => {
   }
 
   if (datax.startsWith('Z:')) {
-    datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
+    datax = datax.replace(/(\r\n|\n|\r|\s|\.)/gm, '').trim();
+    //datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
     if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
-      const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
+      //const pairs = datax.replace(/(\r\n|\n|\r|\.)/gm, '').trim().split(',');
+      //const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
+      const pairs = datax.split(',');
       const packet = pairs.reduce((resultx, pair) => {
         const [key, value] = pair.split(':');
         //const resultx = result;
