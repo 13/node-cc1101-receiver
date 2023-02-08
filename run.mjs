@@ -112,7 +112,7 @@ parser.on('data', (datax) => {
         //const resultx = result;
         if ((/^[N]/i.test(key))) {
           resultx[key] = value;
-        } else if ((/^[T,H,P,V]\d/i.test(key))) {
+        } else if ((/^[T,H,P,V]\d/i.test(key)) && value.length > 1) {
           resultx[key] = parseFloat(value / 10);
         } else {
           resultx[key] = parseInt(value, 10);
