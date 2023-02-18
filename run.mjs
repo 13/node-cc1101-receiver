@@ -85,51 +85,54 @@ port.on('error', (err) => {
   process.exit(2);
 });
 
-parser.on('data', (datax) => {
-  //let datax = data;
+parser.on('data', (ttyData) => {
+  let data = ttyData;
   const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*\d$/.test(string);
-  //const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
+  // const isASCIIMUH = (string) => /^[A-Za-z0-9,.:-]*$/.test(string);
   // const isASCIIMUH_DBG = (string) => /^[A-Za-z0-9\s,.:-\[\]]*$/.test(string);
 
   if (showDebug) {
-    if (datax.startsWith('> ')) {
-      console.log(`${getTime()}${datax}`);
+    if (data.startsWith('> ')) {
+      console.log(`${getTime()}${data}`);
     } else {
-      datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-      console.log(`${getTime()}${datax} L:${datax.length}`);
+      data = data.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
+      console.log(`${getTime()}${data} L:${data.length}`);
     }
   }
 
-  if (datax.startsWith('Z:')) {
-    datax = datax.replace(/(\r\n|\n|\r|\s|\.)/gm, '').trim();
-    //datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
-    if (isASCIIMUH(datax) && datax.startsWith('Z:')) {
-      //const pairs = datax.replace(/(\r\n|\n|\r|\.)/gm, '').trim().split(',');
-      //const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
-      const pairs = datax.split(',');
-      const packet = pairs.reduce((resultx, pair) => {
+  if (data.startsWith('Z:')) {
+    data = data.replace(/(\r\n|\n|\r|\s|\.)/gm, '').trim();
+    // datax = datax.replace(/(\r\n|\n|\r|\s)/gm, '').trim();
+    if (isASCIIMUH(data) && data.startsWith('Z:')) {
+      // const pairs = datax.replace(/(\r\n|\n|\r|\.)/gm, '').trim().split(',');
+      // const pairs = datax.replace(/(\r\n|\n|\r)/gm, '').trim().split(',');
+      const pairs = data.split(',');
+      const packet = pairs.reduce((result, pair) => {
         const [key, value] = pair.split(':');
-        //const resultx = result;
-        if ((/^[N]/i.test(key))) {
-          resultx[key] = value;
+        const res = result;
+        if ((/^[N]/i.test(key) || /^[RN]/i.test(key))) {
+          res[key] = value;
         } else if (/^[T,H,P]\d/i.test(key)) {
-          resultx[key] = parseFloat(value / 10);
+          res[key] = parseFloat(value / 10);
         } else if ((/^[V]\d/i.test(key)) && value.length > 1) {
-          resultx[key] = parseFloat(value / 10);
+          res[key] = parseFloat(value / 10);
         } else {
-          resultx[key] = parseInt(value, 10);
+          res[key] = parseInt(value, 10);
         }
-        return resultx;
+        return res;
       }, {});
+
+      // Remove package length
       delete packet.Z;
+
       if (showVerbose) {
-        console.log(`${getTime()}${datax}`);
+        console.log(`${getTime()}${data}`);
         console.log(`${getTime()} sensors/${packet.N}/json ${JSON.stringify(packet)}`);
       } else {
         console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
       }
       mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
-      packet.N = "XX";
+      // packet.N = 'XX';
     }
   }
 });
