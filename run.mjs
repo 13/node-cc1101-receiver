@@ -110,7 +110,8 @@ parser.on('data', (ttyData) => {
       const packet = pairs.reduce((result, pair) => {
         const [key, value] = pair.split(':');
         const res = result;
-        if ((/^[N]/i.test(key) || /^[RN]/i.test(key))) {
+        if ((/^[N]/i.test(key) || /^[RN]/i.test(key) ||
+             /^[F]/i.test(key) || /^[RF]/i.test(key))) {
           res[key] = value;
         } else if (/^[T,H,P]\d/i.test(key)) {
           res[key] = parseFloat(value / 10);
@@ -132,7 +133,6 @@ parser.on('data', (ttyData) => {
         console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
       }
       mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
-      // packet.N = 'XX';
     }
   }
 });
