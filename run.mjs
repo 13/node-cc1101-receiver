@@ -132,7 +132,7 @@ parser.on('data', (ttyData) => {
       } else {
         console.log(`${getTime()}${JSON.stringify(packet).replace(/[{}"]/g, '')}`);
       }
-      mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet));
+      mqttClient.publish(`sensors/${packet.N}/json`, JSON.stringify(packet), { retain: true });
     }
   }
 });
