@@ -1,6 +1,6 @@
 # node-cc1101-receiver
 
-node serial arduino cc1101 parser and mqtt publisher
+node serial arduino cc1101 parser and mqtt publisher built with Node.js
 
 ## Contents
 
